@@ -40,8 +40,7 @@ components:
         title:
           type: string
         category:
-          type: string
-          format: url
+          type: integer
         starts_at:
           type: string
           format: date
