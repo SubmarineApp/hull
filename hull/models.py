@@ -13,8 +13,13 @@ def next_weekday(d, weekday):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
 
 class Subscription(models.Model):
+    def __str__(self):
+        return f'{self.title} - {self.recurrence}'
+
     class RecurrenceType(models.TextChoices):
         WEEKLY = 'weekly'
         MONTHLY = 'monthly'
