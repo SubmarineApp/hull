@@ -9,7 +9,7 @@ class SubscriptionFilter(django_filters.FilterSet):
     ends_at = django_filters.DateFilter(field_name="ends_at", lookup_expr="lte")
     class Meta:
         model = Subscription
-        fields = ('id', 'starts_at', 'ends_at')
+        fields = ('id', 'starts_at', 'ends_at', 'category')
 
 class SubscriptionViewSet(viewsets.ModelViewSet):
     queryset = Subscription.objects.all().order_by('starts_at')
