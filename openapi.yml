@@ -54,6 +54,7 @@ components:
           type: string
           format: date
           nullable: true
+          readOnly: true
         trial_ends_at:
           type: string
           format: date
