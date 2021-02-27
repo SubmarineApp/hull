@@ -50,6 +50,10 @@ components:
           nullable: true
         recurrence:
           type: string
+        next_recurrence:
+          type: string
+          format: date
+          nullable: true
         trial_ends_at:
           type: string
           format: date
@@ -118,6 +122,12 @@ paths:
         schema:
           type: integer
         description: Filters all subscriptions to those which are in the givern category ID
+      - name: next_recurrence
+        in: query
+        schema:
+          type: string
+          format: date
+        description: Filters all subscriptions to those which recur on or after the given date
     get:
       description: Returns all subscriptions for this user
       responses:
