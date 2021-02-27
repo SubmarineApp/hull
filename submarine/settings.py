@@ -41,10 +41,11 @@ INSTALLED_APPS = [
     'hull.apps.HullConfig',
     'rest_framework',
     'django_filters',
-    'django_property_filter'
+    'django_property_filter',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

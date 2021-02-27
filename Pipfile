@@ -8,6 +8,8 @@ django = "*"
 django-filter = "*"
 django-property-filter = "*"
 python-dateutil = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
