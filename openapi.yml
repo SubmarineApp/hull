@@ -101,6 +101,24 @@ paths:
         '404':
           $ref:  '#/components/responses/NotFound'
   /subscriptions/:
+    parameters:
+      - name: starts_at
+        in: query
+        schema:
+          type: string
+          format: date
+        description: Filters all subscriptions to those which started after to this date
+      - name: ends_at
+        in: query
+        schema:
+          type: string
+          format: date
+        description: Filters all subscriptions to those which ended prior to this date
+      - name: category
+        in: query
+        schema:
+          type: integer
+        description: Filters all subscriptions to those which are in the givern category ID
     get:
       description: Returns all subscriptions for this user
       responses:
