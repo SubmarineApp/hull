@@ -128,6 +128,12 @@ paths:
           type: string
           format: date
         description: Filters all subscriptions to those which recur on or after the given date
+      - name: recurs_before
+        in: query
+        schema:
+          type: string
+          format: date
+        description: Filters all subscriptions to those which recur before or on the given date
     get:
       description: Returns all subscriptions for this user
       responses:

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hull.apps.HullConfig',
     'rest_framework',
-    'django_filters'
+    'django_filters',
+    'django_property_filter'
 ]
 
 MIDDLEWARE = [
