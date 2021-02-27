@@ -8,9 +8,9 @@ info:
     name: MIT
 
 servers:
-  - url: 'http://localhost:8000/api/v1'
+  - url: 'http://localhost:8000/'
     description: 'Development server'
-  - url: 'https://submarine.app/api/v1'
+  - url: 'https://submarineapp.space/api/v1'
     description: 'Live application'
 
 components:
@@ -31,7 +31,7 @@ components:
       required:
         - title
         - starts_at
-        - recurs
+        - recurrence
         - cost
       properties:
         id:
@@ -39,6 +39,9 @@ components:
           readOnly: true
         title:
           type: string
+        category:
+          type: string
+          format: url
         starts_at:
           type: string
           format: date
@@ -67,7 +70,7 @@ components:
       description: The entity was created successfully
 
 paths:
-  /categories:
+  /categories/:
     get:
       description: Returns all categories available
       responses:
@@ -79,7 +82,25 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Category'
-  /subscriptions:
+  /categories/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      description: Returns information about a specific category
+      responses:
+        '200':
+          description: The requested category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          $ref:  '#/components/responses/NotFound'
+  /subscriptions/:
     get:
       description: Returns all subscriptions for this user
       responses:
@@ -93,12 +114,17 @@ paths:
                   $ref: '#/components/schemas/Subscription'
     post:
       description: Creates a single subscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscription'
       responses:
         '204':
           $ref:  '#/components/responses/Created'
         '400':
           $ref: '#/components/responses/BadRequest'
-  /subscriptions/{id}:
+  /subscriptions/{id}/:
     parameters:
       - name: id
         in: path
@@ -109,20 +135,24 @@ paths:
       description: Returns information about a specific subscription
       responses:
         '200':
-          description: foo
+          description: The requested subscription
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
         '404':
           $ref:  '#/components/responses/NotFound'
-    patch:
-      description: Edits a specific subscription
-      responses:
-        '204':
-          description: The subscription was edited successfully
-        '404':
-          $ref:  '#/components/responses/NotFound'
-    delete:
-      description: Deletes a specific subscription
-      responses:
-        '204':
-          description: The subscription was deleted successfully
-        '404':
-          $ref:  '#/components/responses/NotFound'
+    # patch:
+    #   description: Edits a specific subscription
+    #   responses:
+    #     '204':
+    #       description: The subscription was edited successfully
+    #     '404':
+    #       $ref:  '#/components/responses/NotFound'
+    # delete:
+    #   description: Deletes a specific subscription
+    #   responses:
+    #     '204':
+    #       description: The subscription was deleted successfully
+    #     '404':
+    #       $ref:  '#/components/responses/NotFound'
