@@ -1,0 +1,106 @@
+openapi: '3.0.2'
+
+info:
+  version: '1.0.0'
+  title: Submarine
+  description: Submraine internal API - manage and track your subscriptions and free trials
+  license:
+    name: MIT
+
+servers:
+  - url: 'http://localhost:8000/'
+    basePath:
+    description: 'Development server'
+  - url: 'https://submarine.app/api/v1'
+    description: 'Live application'
+
+components:
+  schemas:
+    Subscription:
+      type: object
+      required:
+        - title
+        - starts_at
+        - recurs
+        - cost
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+        starts_at:
+          type: string
+          format: date
+        ends_at:
+          type: string
+          format: date
+          nullable: true
+        recurrence:
+          type: string
+        trial_ends_at:
+          type: string
+          format: date
+          nullable: true
+        cost:
+          type: integer
+        trial_cost:
+          type: integer
+          nullable: true
+
+    SubscriptionList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Subscription'
+
+  responses:
+  parameters:
+  requestBodies:
+  headers:
+
+paths:
+  /categories:
+    get:
+      description: Returns all categories available
+      responses:
+        '200':
+          content
+  /subscriptions:
+    get:
+      description: Returns all subscriptions for this user
+      responses:
+        '200':
+          description: The user's subscription list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionList'
+    put:
+      description: Creates a single subscription
+      responses:
+        '204':
+          description: The subscription was created successfully
+        '400':
+          content
+  /subscriptions/{id}:
+    get:
+      description: Returns information about a specific subscription
+      responses:
+        '200':
+          content
+        '404':
+          content
+    patch:
+      description: Edits a specific subscription
+      responses:
+        '204':
+          description: The subscription was edited successfully
+        '404':
+          content
+    delete:
+      description: Deletes a specific subscription
+      responses:
+        '204':
+          description: The subscription was deleted successfully
+        '404':
+          content
