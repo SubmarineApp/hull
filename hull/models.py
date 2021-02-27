@@ -1,5 +1,7 @@
 from django.db import models
 import datetime
+import dateutil
+from dateutil.relativedelta import *
 
 DEFAULT_CATEGORY_ID = 1
 
@@ -7,7 +9,7 @@ def next_weekday(d, weekday):
     days_ahead = weekday - d.weekday()
     if days_ahead <= 0: # Target day already happened this week
         days_ahead += 7
-    return d + datetime.timedelta(days_ahead)
+    return (d + datetime.timedelta(days_ahead)).date()
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -25,7 +27,7 @@ class Subscription(models.Model):
     recurrence = models.CharField(max_length=20, choices=RecurrenceType.choices)
     trial_cost = models.PositiveIntegerField(null=True)
     cost = models.PositiveIntegerField(default=0)
-    category = models.OneToOneField(
+    category = models.ForeignKey(
         Category,
         on_delete=models.DO_NOTHING,
         default=DEFAULT_CATEGORY_ID
@@ -33,7 +35,15 @@ class Subscription(models.Model):
 
     @property
     def next_recurrence(self):
-        if self.trial_ends_at and self.trial_ends_at < datetime.datetime.now().date():
+        if self.trial_ends_at and self.trial_ends_at < datetime.date.today():
             return self.trial_ends_at
         if self.recurrence == 'weekly':
-            return next_weekday(datetime.datetime.now())
+            return next_weekday(datetime.datetime.now(), self.starts_at.weekday())
+        if self.recurrence == 'monthly':
+            delta = relativedelta(datetime.date.today(), self.starts_at)
+            months_since = delta.years * 12 + delta.months
+            return self.starts_at + relativedelta(months=months_since + 1)
+        if self.recurrence == 'yearly':
+            delta =  relativedelta(datetime.date.today(), self.starts_at)
+            years_since = delta.years
+            return self.starts_at + relativedelta(years=years_since + 1)
