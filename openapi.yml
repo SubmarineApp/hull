@@ -8,14 +8,24 @@ info:
     name: MIT
 
 servers:
-  - url: 'http://localhost:8000/'
-    basePath:
+  - url: 'http://localhost:8000/api/v1'
     description: 'Development server'
   - url: 'https://submarine.app/api/v1'
     description: 'Live application'
 
 components:
   schemas:
+    Category:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+
     Subscription:
       type: object
       required:
@@ -48,15 +58,13 @@ components:
           type: integer
           nullable: true
 
-    SubscriptionList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Subscription'
-
   responses:
-  parameters:
-  requestBodies:
-  headers:
+    BadRequest:
+      description: The request was rejected due to invalid contents
+    NotFound:
+      description: The request was rejected as the requisite entity was not found
+    Created:
+      description: The entity was created successfully
 
 paths:
   /categories:
@@ -64,7 +72,13 @@ paths:
       description: Returns all categories available
       responses:
         '200':
-          content
+          description: The category list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
   /subscriptions:
     get:
       description: Returns all subscriptions for this user
@@ -74,33 +88,41 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubscriptionList'
-    put:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subscription'
+    post:
       description: Creates a single subscription
       responses:
         '204':
-          description: The subscription was created successfully
+          $ref:  '#/components/responses/Created'
         '400':
-          content
+          $ref: '#/components/responses/BadRequest'
   /subscriptions/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
     get:
       description: Returns information about a specific subscription
       responses:
         '200':
-          content
+          description: foo
         '404':
-          content
+          $ref:  '#/components/responses/NotFound'
     patch:
       description: Edits a specific subscription
       responses:
         '204':
           description: The subscription was edited successfully
         '404':
-          content
+          $ref:  '#/components/responses/NotFound'
     delete:
       description: Deletes a specific subscription
       responses:
         '204':
           description: The subscription was deleted successfully
         '404':
-          content
+          $ref:  '#/components/responses/NotFound'
