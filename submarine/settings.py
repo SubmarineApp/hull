@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'django_property_filter',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -81,8 +82,12 @@ WSGI_APPLICATION = 'submarine.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django_cockroachdb',
+        'NAME': 'submarine',
+        'USER': 'submarine',
+        'PASSWORD': 'submarine',
+        'HOST': 'localhost',
+        'PORT': '26257'
     }
 }
 

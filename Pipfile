@@ -8,6 +8,8 @@ django = "*"
 django-filter = "*"
 django-property-filter = "*"
 python-dateutil = "*"
+django-cockroachdb = "*"
+psycopg2-binary = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
 
